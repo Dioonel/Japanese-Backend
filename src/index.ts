@@ -4,6 +4,7 @@ import { router } from './router.js';
 import { connect } from './db.js';
 
 dotenv.config();
+const port = process.env.PORT || 3000;
 
 const app = express();
 app.use(express.json());
@@ -15,6 +16,6 @@ app.get('/', (req, res) => {
 
 router(app);                                                     // Router is one of the last things to be called, only before error handling
 
-app.listen(3000, () => {
-    console.log('Server started on port 3000');
+app.listen(port, () => {
+    console.log('Server started on port ' + port);
 });

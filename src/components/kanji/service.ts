@@ -1,8 +1,19 @@
+// import { ObjectId } from 'mongoose';
+import { KanjiStore } from './store.js';
+import { Kanji, KanjiCreateDTO } from './kanji.js';
+
+const store = new KanjiStore();
+
 export class KanjiService {
-    getKanji() {
-        return [
-            { id: 1, kanji: '日', meaning: ['Day'] },
-            { id: 2, kanji: '月', meaning: ['Month'] }
-        ];
+    async getKanji() {
+        return await store.getKanji();
+    }
+
+    async getKanjiById(id: string) {
+        return await store.getKanjiById(id);
+    }
+
+    async createKanji(kanji: KanjiCreateDTO) {
+        return await store.createKanji(kanji);
     }
 }
