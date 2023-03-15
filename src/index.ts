@@ -1,11 +1,13 @@
 import express, { Express, Request, Response } from 'express';
-// import dotenv from 'dotenv';
+import dotenv from 'dotenv';
 import { router } from './router.js';
+import { connect } from './db.js';
 
-// dotenv.config();
+dotenv.config();
 
 const app = express();
 app.use(express.json());
+await connect(process.env.DB_URI);
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
