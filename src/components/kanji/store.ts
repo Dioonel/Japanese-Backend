@@ -14,4 +14,12 @@ export class KanjiStore {
         const newKanji = new kanjiModel(kanji);
         return await newKanji.save();
     }
+
+    async updateKanji(id: string, changes: KanjiCreateDTO) {
+        return await kanjiModel.findByIdAndUpdate(id, changes, { new: true, runValidators: true });
+    }
+
+    async deleteKanji(id: string) {
+        return await kanjiModel.findByIdAndDelete(id);
+    }
 }
