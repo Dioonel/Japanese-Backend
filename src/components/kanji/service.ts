@@ -1,4 +1,5 @@
 // import { ObjectId } from 'mongoose';
+import { notFound } from '@hapi/boom';
 import { KanjiStore } from './store.js';
 import { Kanji, KanjiCreateDTO, KanjiUpdateDTO } from './kanji.js';
 
@@ -10,7 +11,11 @@ export class KanjiService {
     }
 
     async getKanjiById(id: string) {
-        return await store.getKanjiById(id);
+        const kanji = await store.getKanjiById(id);
+        if (!kanji) {
+            throw notFound(`Kanji with id ${id} not found`);
+        }
+        return kanji;
     }
 
     async createKanji(kanji: KanjiCreateDTO) {
