@@ -13,7 +13,7 @@ export class KanjiStore {
             if(err.name === 'CastError') {
                 throw notFound(`Kanji with id ${id} not found`);
             } else {
-                throw internal(`Internal server error: ${err.message}`);
+                throw internal(`${err.message}`);
             }
         });
     }
@@ -22,7 +22,7 @@ export class KanjiStore {
         const newKanji = new kanjiModel(kanji);
         return await newKanji.save()
         .catch((err) => {
-            throw internal(`Internal server error: ${err.message}`);
+            throw internal(`${err.message}`);
         });
     }
 
@@ -32,9 +32,9 @@ export class KanjiStore {
             if(err.name === 'CastError') {
                 throw notFound(`Kanji with id ${id} not found`);
             } else if(err.name === 'ValidationError') {
-                throw badData(`Invalid data: ${err.message}`);
+                throw badData(`${err.message}`);
             } else {
-                throw internal(`Internal server error: ${err.message}`);
+                throw internal(`${err.message}`);
             }
         });
     }
@@ -45,7 +45,7 @@ export class KanjiStore {
             if(err.name === 'CastError') {
                 throw notFound(`Kanji with id ${id} not found`);
             } else {
-                throw internal(`Internal server error: ${err.message}`);
+                throw internal(`${err.message}`);
             }
         });
     }
