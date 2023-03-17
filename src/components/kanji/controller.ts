@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { KanjiService } from './service.js';
 import { joiValidator } from './../../middlewares/joi.validator.js';
-import { KanjiJoi, KanjiCreateJoi, KanjiUpdateJoi, IdJoi } from './kanji.js';
+import { KanjiJoi, KanjiCreateJoi, KanjiUpdateJoi, IdJoi, PropsJoi } from './kanji.js';
 
 const router = Router();
 const service = new KanjiService();
@@ -33,6 +33,32 @@ router.post('/',
     async (req, res, next) => {
         try{
             const kanji = await service.createKanji(req.body);
+            res.json(kanji);
+        } catch (err) {
+            next(err);
+        }
+    }
+);
+
+router.patch('/push/:id', 
+    joiValidator(IdJoi, 'params'),
+    joiValidator(PropsJoi, 'body'),
+    async (req, res, next) => {
+        try{
+            const kanji = await service.pushProp(req.params.id, req.body);
+            res.json(kanji);
+        } catch (err) {
+            next(err);
+        }
+    }
+);
+
+router.patch('/pull/:id', 
+    joiValidator(IdJoi, 'params'),
+    joiValidator(PropsJoi, 'body'),
+    async (req, res, next) => {
+        try{
+            const kanji = await service.pullProp(req.params.id, req.body);
             res.json(kanji);
         } catch (err) {
             next(err);

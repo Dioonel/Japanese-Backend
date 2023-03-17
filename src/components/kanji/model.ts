@@ -13,18 +13,21 @@ const kanjiSchema = new Schema({
         required: true,
         maxLength: 64,
         minLength: 1,
+        unique: false,
     }],
     pronunciation: [{
         type: String,
         required: true,
         maxLength: 64,
         minLength: 1,
+        unique: false,
     }],
     notes: {
         type: String,
         required: false,
         maxLength: 1024,
         minLength: 1,
+        unique: false,
     },
     created_at: {
         type: Date,

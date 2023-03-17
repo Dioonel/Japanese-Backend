@@ -7,8 +7,8 @@ import joi from 'joi';
 
 let id = joi.string().regex(/^[0-9a-fA-F]{24}$/);
 let kanji = joi.string().min(1).max(1);
-let meaning = joi.array().min(1).items(joi.string().min(1).max(64));
-let pronunciation = joi.array().min(1).items(joi.string().min(1).max(64));
+let meaning = joi.array().min(1).unique().items(joi.string().min(1).max(64));
+let pronunciation = joi.array().min(1).unique().items(joi.string().min(1).max(64));
 let notes = joi.string().allow(null).min(1).max(1024);
 let created_at = joi.string().isoDate();
 
@@ -38,6 +38,12 @@ export const KanjiUpdateJoi = joi.object({
 export const IdJoi = joi.object({
     id: id.required(),
 });
+
+export const PropsJoi = joi.object({
+    prop: joi.string().valid('meaning', 'pronunciation').required(),
+    values: joi.array().min(1).unique().items(joi.string().min(1).max(64)).required(),
+});
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////// TYPESCRIPT INTERFACES //////////////////////////////////////////////////

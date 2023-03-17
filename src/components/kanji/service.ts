@@ -29,4 +29,12 @@ export class KanjiService {
     async deleteKanji(id: string) {
         return await store.deleteKanji(id);
     }
+
+    async pushProp(id: string, obj: any) {
+        return await store.pushProp(id, obj.prop, obj.values);
+    }
+
+    async pullProp(id: string, obj: any) {
+        return await store.pullProp(id, obj.prop, obj.values);
+    }
 }
