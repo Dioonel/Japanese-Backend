@@ -1,26 +1,27 @@
 import { notFound, internal, badData } from '@hapi/boom';
-import { kanjiModel } from './model.js';
-import { Kanji, KanjiCreateDTO, KanjiUpdateDTO } from './kanji.js';
 
-export class KanjiStore {
-    async getKanji() {
-        return await kanjiModel.find();
+import { wordModel } from './model.js';
+import { WordCreateDTO, WordUpdateDTO } from './word.js';
+
+export class WordStore {
+    async getWords() {
+        return await wordModel.find();
     }
 
-    async getKanjiById(id: string) {
-        return await kanjiModel.findById(id)
+    async getWordById(id: string) {
+        return await wordModel.findById(id)
         .catch((err) => {
             if(err.name === 'CastError') {
-                throw notFound(`Kanji with id ${id} not found`);
+                throw notFound(`Word with id ${id} not found`);
             } else {
                 throw internal(`${err.message}`);
             }
         });
     }
 
-    async createKanji(kanji: KanjiCreateDTO) {
-        const newKanji = new kanjiModel(kanji);
-        return await newKanji.save()
+    async createWord(word: WordCreateDTO) {
+        const newWord = new wordModel(word);
+        return await newWord.save()
         .catch((err) => {
             if(err.name === 'ValidationError') {
                 throw badData(`${err.message}`);
@@ -31,11 +32,11 @@ export class KanjiStore {
         });
     }
 
-    async updateKanji(id: string, changes: KanjiUpdateDTO) {
-        return await kanjiModel.findByIdAndUpdate(id, changes, { new: true, runValidators: true })
+    async updateWord(id: string, changes: WordUpdateDTO) {
+        return await wordModel.findByIdAndUpdate(id, changes, { new: true, runValidators: true })
         .catch((err) => {
             if(err.name === 'CastError') {
-                throw notFound(`Kanji with id ${id} not found`);
+                throw notFound(`Word with id ${id} not found`);
             } else if(err.name === 'ValidationError') {
                 throw badData(`${err.message}`);
             } else {
@@ -44,11 +45,11 @@ export class KanjiStore {
         });
     }
 
-    async deleteKanji(id: string) {
-        return await kanjiModel.findByIdAndDelete(id)
+    async deleteWord(id: string) {
+        return await wordModel.findByIdAndDelete(id)
         .catch((err) => {
             if(err.name === 'CastError') {
-                throw notFound(`Kanji with id ${id} not found`);
+                throw notFound(`Word with id ${id} not found`);
             } else {
                 throw internal(`${err.message}`);
             }
@@ -56,10 +57,10 @@ export class KanjiStore {
     }
 
     async pushProp(id: string, prop: string, values: string[]) {
-        return await kanjiModel.findByIdAndUpdate(id, { $addToSet: { [prop]: values } }, { new: true, runValidators: true })
+        return await wordModel.findByIdAndUpdate(id, { $addToSet: { [prop]: values } }, { new: true, runValidators: true })
         .catch((err) => {
             if(err.name === 'CastError') {
-                throw notFound(`Kanji with id ${id} not found`);
+                throw notFound(`Word with id ${id} not found`);
             } else if(err.name === 'ValidationError') {
                 throw badData(`${err.message}`);
             } else {
@@ -69,10 +70,10 @@ export class KanjiStore {
     }
 
     async pullProp(id: string, prop: string, values: string[]) {
-        return await kanjiModel.findByIdAndUpdate(id, { $pull: { [prop]: { $in: values }} }, { new: true, runValidators: true })
+        return await wordModel.findByIdAndUpdate(id, { $pull: { [prop]: { $in: values }} }, { new: true, runValidators: true })
         .catch((err) => {
             if(err.name === 'CastError') {
-                throw notFound(`Kanji with id ${id} not found`);
+                throw notFound(`Word with id ${id} not found`);
             } else if(err.name === 'ValidationError') {
                 throw badData(`${err.message}`);
             } else {

@@ -1,4 +1,3 @@
-// import { ObjectId } from 'mongoose';
 import { notFound } from '@hapi/boom';
 import { KanjiStore } from './store.js';
 import { Kanji, KanjiCreateDTO, KanjiUpdateDTO } from './kanji.js';
