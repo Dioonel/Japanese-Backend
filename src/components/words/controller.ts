@@ -1,21 +1,24 @@
 import { Router } from 'express';
 
 import { WordService } from './service.js';
-import { IdJoi, PropsJoi, WordCreateJoi, WordUpdateJoi } from './word.js';
+import { IdJoi, PropsJoi, WordCreateJoi, WordUpdateJoi, WordFilterJoi } from './word.js';
 import { joiValidator } from './../../middlewares/joi.validator.js';
 
 const router = Router();
 const service = new WordService();
 //// service /////
 
-router.get('/', async (req, res, next) => {
-    try{
-        const words = await service.getWords();
-        res.json(words);
-    } catch (err) {
-        next(err);
+router.get('/',
+    joiValidator(WordFilterJoi, 'query'),
+    async (req, res, next) => {
+        try{
+            const words = await service.getWords(req.query);
+            res.json(words);
+        } catch (err) {
+            next(err);
+        }
     }
-});
+);
 
 router.get('/:id',
     joiValidator(IdJoi, 'params'),

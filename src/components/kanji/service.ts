@@ -1,12 +1,21 @@
 import { notFound } from '@hapi/boom';
 import { KanjiStore } from './store.js';
 import { Kanji, KanjiCreateDTO, KanjiUpdateDTO } from './kanji.js';
+import { isEmpty } from '../../shared/helpers.js';
 
 const store = new KanjiStore();
 
 export class KanjiService {
-    async getKanji() {
-        return await store.getKanji();
+    async getKanji(query = null) {
+        let filter = null;
+        if(!isEmpty(query) && query !== null){
+            filter = {};
+            if(query?.kanji) filter = {...filter, kanji: {$regex: query.kanji || '', $options: 'i'}};
+            if(query?.meaning) filter = {...filter, meaning: {$regex: query.meaning || '', $options: 'i'}};
+            if(query?.pronunciation) filter = {...filter, pronunciation: {$regex: query.pronunciation || '', $options: 'i'}};
+            if(query?.notes) filter = {...filter, notes: {$regex: query.notes || '', $options: 'i'}};
+        }
+        return await store.getKanji(filter);
     }
 
     async getKanjiById(id: string) {

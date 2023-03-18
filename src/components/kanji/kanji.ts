@@ -44,6 +44,13 @@ export const PropsJoi = joi.object({
     values: joi.array().min(1).unique().items(joi.string().min(1).max(64)).required(),
 });
 
+export const KanjiFilterJoi = joi.object({
+    kanji: kanji.optional(),
+    meaning: joi.string().min(1).max(64).optional(),
+    pronunciation: joi.string().min(1).max(64).optional(),
+    notes: notes.optional(),
+});
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////// TYPESCRIPT INTERFACES //////////////////////////////////////////////////

@@ -4,8 +4,8 @@ import { wordModel } from './model.js';
 import { WordCreateDTO, WordUpdateDTO } from './word.js';
 
 export class WordStore {
-    async getWords() {
-        return await wordModel.find();
+    async getWords(filter) {
+        return await wordModel.find(filter);
     }
 
     async getWordById(id: string) {

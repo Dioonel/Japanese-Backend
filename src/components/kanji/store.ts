@@ -3,8 +3,8 @@ import { kanjiModel } from './model.js';
 import { Kanji, KanjiCreateDTO, KanjiUpdateDTO } from './kanji.js';
 
 export class KanjiStore {
-    async getKanji() {
-        return await kanjiModel.find();
+    async getKanji(filter) {
+        return await kanjiModel.find(filter);
     }
 
     async getKanjiById(id: string) {

@@ -1,13 +1,21 @@
 import { notFound } from '@hapi/boom';
-
 import { WordStore } from './store.js';
 import { WordCreateDTO, WordUpdateDTO } from './word.js';
+import { isEmpty } from '../../shared/helpers.js';
 
 const store = new WordStore();
 
 export class WordService {
-    async getWords() {
-        return await store.getWords();
+    async getWords(query = null) {
+        let filter = null;
+        if(!isEmpty(query) && query !== null){
+            filter = {};
+            if(query?.word) filter = {...filter, word: {$regex: query.word || '', $options: 'i'}};
+            if(query?.meaning) filter = {...filter, meaning: {$regex: query.meaning || '', $options: 'i'}};
+            if(query?.pronunciation) filter = {...filter, pronunciation: {$regex: query.pronunciation || '', $options: 'i'}};
+            if(query?.notes) filter = {...filter, notes: {$regex: query.notes || '', $options: 'i'}};
+        }
+        return await store.getWords(filter);
     }
 
     async getWordById(id: string) {
