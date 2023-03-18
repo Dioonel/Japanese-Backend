@@ -3,6 +3,15 @@ import { kanjiModel } from './model.js';
 import { Kanji, KanjiCreateDTO, KanjiUpdateDTO } from './kanji.js';
 
 export class KanjiStore {
+    private static _instance: KanjiStore;
+    private constructor() {}
+    static getInstance(): KanjiStore {
+        if (!KanjiStore._instance) {
+            KanjiStore._instance = new KanjiStore();
+        }
+        return KanjiStore._instance;
+    }
+    
     async getKanji(filter) {
         return await kanjiModel.find(filter);
     }
@@ -49,32 +58,6 @@ export class KanjiStore {
         .catch((err) => {
             if(err.name === 'CastError') {
                 throw notFound(`Kanji with id ${id} not found`);
-            } else {
-                throw internal(`${err.message}`);
-            }
-        });
-    }
-
-    async pushProp(id: string, prop: string, values: string[]) {
-        return await kanjiModel.findByIdAndUpdate(id, { $addToSet: { [prop]: values } }, { new: true, runValidators: true })
-        .catch((err) => {
-            if(err.name === 'CastError') {
-                throw notFound(`Kanji with id ${id} not found`);
-            } else if(err.name === 'ValidationError') {
-                throw badData(`${err.message}`);
-            } else {
-                throw internal(`${err.message}`);
-            }
-        });
-    }
-
-    async pullProp(id: string, prop: string, values: string[]) {
-        return await kanjiModel.findByIdAndUpdate(id, { $pull: { [prop]: { $in: values }} }, { new: true, runValidators: true })
-        .catch((err) => {
-            if(err.name === 'CastError') {
-                throw notFound(`Kanji with id ${id} not found`);
-            } else if(err.name === 'ValidationError') {
-                throw badData(`${err.message}`);
             } else {
                 throw internal(`${err.message}`);
             }

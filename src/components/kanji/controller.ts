@@ -1,11 +1,15 @@
 import { Router } from 'express';
 
 import { KanjiService } from './service.js';
+import { SharedService } from '../../shared/shared.service.js';
 import { joiValidator } from './../../middlewares/joi.validator.js';
-import { KanjiJoi, KanjiCreateJoi, KanjiUpdateJoi, IdJoi, PropsJoi, KanjiFilterJoi } from './kanji.js';
+import { KanjiJoi, KanjiCreateJoi, KanjiUpdateJoi, KanjiFilterJoi } from './kanji.js';
+import { IdJoi, PropsJoi } from './../../shared/joi.js';
+import { kanjiModel } from './model.js';
 
 const router = Router();
-const service = new KanjiService();
+const service = KanjiService.getInstance();
+const sharedService = SharedService.getInstance();
 
 router.get('/',
     joiValidator(KanjiFilterJoi, 'query'),
@@ -48,7 +52,7 @@ router.patch('/push/:id',
     joiValidator(PropsJoi, 'body'),
     async (req, res, next) => {
         try{
-            const kanji = await service.pushProp(req.params.id, req.body);
+            const kanji = await sharedService.pushProp(kanjiModel, req.params.id, req.body.prop, req.body.values);
             res.json(kanji);
         } catch (err) {
             next(err);
@@ -61,7 +65,7 @@ router.patch('/pull/:id',
     joiValidator(PropsJoi, 'body'),
     async (req, res, next) => {
         try{
-            const kanji = await service.pullProp(req.params.id, req.body);
+            const kanji = await sharedService.pullProp(kanjiModel, req.params.id, req.body.prop, req.body.values);
             res.json(kanji);
         } catch (err) {
             next(err);

@@ -3,9 +3,18 @@ import { WordStore } from './store.js';
 import { WordCreateDTO, WordUpdateDTO } from './word.js';
 import { isEmpty } from '../../shared/helpers.js';
 
-const store = new WordStore();
+const store = WordStore.getInstance();
 
 export class WordService {
+    private static _instance: WordService;
+    private constructor() {}
+    static getInstance(): WordService {
+        if (!WordService._instance) {
+            WordService._instance = new WordService();
+        }
+        return WordService._instance;
+    }
+
     async getWords(query = null) {
         let filter = null;
         if(!isEmpty(query) && query !== null){
@@ -36,13 +45,5 @@ export class WordService {
 
     async deleteWord(id: string) {
         return await store.deleteWord(id);
-    }
-
-    async pushProp(id: string, obj: any) {
-        return await store.pushProp(id, obj.prop, obj.values);
-    }
-
-    async pullProp(id: string, obj: any) {
-        return await store.pullProp(id, obj.prop, obj.values);
     }
 }

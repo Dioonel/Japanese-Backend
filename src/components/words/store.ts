@@ -4,6 +4,15 @@ import { wordModel } from './model.js';
 import { WordCreateDTO, WordUpdateDTO } from './word.js';
 
 export class WordStore {
+    private static _instance: WordStore;
+    private constructor() {}
+    static getInstance(): WordStore {
+        if (!WordStore._instance) {
+            WordStore._instance = new WordStore();
+        }
+        return WordStore._instance;
+    }
+
     async getWords(filter) {
         return await wordModel.find(filter);
     }
@@ -56,29 +65,4 @@ export class WordStore {
         });
     }
 
-    async pushProp(id: string, prop: string, values: string[]) {
-        return await wordModel.findByIdAndUpdate(id, { $addToSet: { [prop]: values } }, { new: true, runValidators: true })
-        .catch((err) => {
-            if(err.name === 'CastError') {
-                throw notFound(`Word with id ${id} not found`);
-            } else if(err.name === 'ValidationError') {
-                throw badData(`${err.message}`);
-            } else {
-                throw internal(`${err.message}`);
-            }
-        });
-    }
-
-    async pullProp(id: string, prop: string, values: string[]) {
-        return await wordModel.findByIdAndUpdate(id, { $pull: { [prop]: { $in: values }} }, { new: true, runValidators: true })
-        .catch((err) => {
-            if(err.name === 'CastError') {
-                throw notFound(`Word with id ${id} not found`);
-            } else if(err.name === 'ValidationError') {
-                throw badData(`${err.message}`);
-            } else {
-                throw internal(`${err.message}`);
-            }
-        });
-    }
 }

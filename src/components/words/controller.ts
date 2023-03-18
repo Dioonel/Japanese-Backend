@@ -1,12 +1,15 @@
 import { Router } from 'express';
 
 import { WordService } from './service.js';
-import { IdJoi, PropsJoi, WordCreateJoi, WordUpdateJoi, WordFilterJoi } from './word.js';
+import { SharedService } from '../../shared/shared.service.js';
+import { WordCreateJoi, WordUpdateJoi, WordFilterJoi } from './word.js';
+import { IdJoi, PropsJoi } from './../../shared/joi.js';
 import { joiValidator } from './../../middlewares/joi.validator.js';
+import { wordModel } from './model.js';
 
 const router = Router();
-const service = new WordService();
-//// service /////
+const service = WordService.getInstance();
+const sharedService = SharedService.getInstance();
 
 router.get('/',
     joiValidator(WordFilterJoi, 'query'),
@@ -49,7 +52,7 @@ router.patch('/push/:id',
     joiValidator(PropsJoi, 'body'),
     async (req, res, next) => {
         try{
-            const word = await service.pushProp(req.params.id, req.body);
+            const word = await sharedService.pushProp(wordModel, req.params.id, req.body.prop, req.body.values);
             res.json(word);
         } catch (err) {
             next(err);
@@ -62,7 +65,7 @@ router.patch('/pull/:id',
     joiValidator(PropsJoi, 'body'),
     async (req, res, next) => {
         try{
-            const word = await service.pullProp(req.params.id, req.body);
+            const word = await sharedService.pullProp(wordModel, req.params.id, req.body.prop, req.body.values);
             res.json(word);
         } catch (err) {
             next(err);

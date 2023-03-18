@@ -3,9 +3,18 @@ import { KanjiStore } from './store.js';
 import { Kanji, KanjiCreateDTO, KanjiUpdateDTO } from './kanji.js';
 import { isEmpty } from '../../shared/helpers.js';
 
-const store = new KanjiStore();
+const store = KanjiStore.getInstance();
 
 export class KanjiService {
+    private static _instance: KanjiService;
+    private constructor() {}
+    static getInstance(): KanjiService {
+        if (!KanjiService._instance) {
+            KanjiService._instance = new KanjiService();
+        }
+        return KanjiService._instance;
+    }
+
     async getKanji(query = null) {
         let filter = null;
         if(!isEmpty(query) && query !== null){
@@ -36,13 +45,5 @@ export class KanjiService {
 
     async deleteKanji(id: string) {
         return await store.deleteKanji(id);
-    }
-
-    async pushProp(id: string, obj: any) {
-        return await store.pushProp(id, obj.prop, obj.values);
-    }
-
-    async pullProp(id: string, obj: any) {
-        return await store.pullProp(id, obj.prop, obj.values);
     }
 }
