@@ -35,7 +35,6 @@ export class WordStore {
             if(err.name === 'ValidationError') {
                 throw badData(`${err.message}`);
             } else {
-                console.log(err);
                 throw internal(`${err.message}`);
             }
         });

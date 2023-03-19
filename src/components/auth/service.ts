@@ -17,6 +17,11 @@ export class AuthService {
     }
 
     async register(user: UserLoginDTO) {
+        let userCount = await store.getUserCount();
+        if(userCount > 0) {
+            throw new Error('Only one admin user is allowed');
+        }
+
         let newUser: UserCreateDTO = {
             username: user.username,
             password: await hash(user.password, 10),

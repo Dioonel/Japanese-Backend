@@ -1,5 +1,6 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import { router } from './router.js';
 import { connect } from './db.js';
 import { logError, boomErrorHandler, errorHandler } from './middlewares/error.handlers.js';
@@ -9,6 +10,7 @@ const port = process.env.PORT || 3000;
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 await connect(process.env.DB_URI);
 
 import passport from 'passport';
