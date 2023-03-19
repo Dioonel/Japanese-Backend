@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import passport from 'passport';
 
 import { WordService } from './service.js';
 import { SharedService } from '../../shared/shared.service.js';
@@ -36,6 +37,7 @@ router.get('/:id',
 );
 
 router.post('/',
+    passport.authenticate('jwt', { session: false }),
     joiValidator(WordCreateJoi, 'body'),
     async (req, res, next) => {
         try{
@@ -48,6 +50,7 @@ router.post('/',
 );
 
 router.patch('/push/:id', 
+    passport.authenticate('jwt', { session: false }),
     joiValidator(IdJoi, 'params'),
     joiValidator(PropsJoi, 'body'),
     async (req, res, next) => {
@@ -61,6 +64,7 @@ router.patch('/push/:id',
 );
 
 router.patch('/pull/:id', 
+    passport.authenticate('jwt', { session: false }),
     joiValidator(IdJoi, 'params'),
     joiValidator(PropsJoi, 'body'),
     async (req, res, next) => {
@@ -74,6 +78,7 @@ router.patch('/pull/:id',
 );
 
 router.patch('/:id',
+    passport.authenticate('jwt', { session: false }),
     joiValidator(IdJoi, 'params'),
     joiValidator(WordUpdateJoi, 'body'),
     async (req, res, next) => {
@@ -87,6 +92,7 @@ router.patch('/:id',
 );
 
 router.delete('/:id',
+    passport.authenticate('jwt', { session: false }),
     joiValidator(IdJoi, 'params'),
     async (req, res, next) => {
         try{

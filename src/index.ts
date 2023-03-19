@@ -11,6 +11,12 @@ const app = express();
 app.use(express.json());
 await connect(process.env.DB_URI);
 
+import passport from 'passport';
+import LocalStrategy from './passport/local.strategy.js';
+import JwtStrategy from './passport/jwt.strategy.js';
+passport.use(LocalStrategy);
+passport.use(JwtStrategy);
+
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
