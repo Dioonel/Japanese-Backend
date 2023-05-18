@@ -17,14 +17,17 @@ export class KanjiService {
 
     async getKanji(query = null) {
         let filter = null;
+        let paginate = {};
         if(!isEmpty(query) && query !== null){
             filter = {};
             if(query?.kanji) filter = {...filter, kanji: {$regex: query.kanji || '', $options: 'i'}};
             if(query?.meaning) filter = {...filter, meaning: {$regex: query.meaning || '', $options: 'i'}};
             if(query?.pronunciation) filter = {...filter, pronunciation: {$regex: query.pronunciation || '', $options: 'i'}};
             if(query?.notes) filter = {...filter, notes: {$regex: query.notes || '', $options: 'i'}};
+            if(query?.limit) paginate = {...paginate, limit: Number(query.limit)};
+            if(query?.skip) paginate = {...paginate, skip: Number(query.skip)};
         }
-        return await store.getKanji(filter);
+        return await store.getKanji(filter, paginate);
     }
 
     async getKanjiById(id: string) {

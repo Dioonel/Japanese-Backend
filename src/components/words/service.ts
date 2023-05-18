@@ -17,14 +17,17 @@ export class WordService {
 
     async getWords(query = null) {
         let filter = null;
+        let paginate = {};
         if(!isEmpty(query) && query !== null){
             filter = {};
             if(query?.word) filter = {...filter, word: {$regex: query.word || '', $options: 'i'}};
             if(query?.meaning) filter = {...filter, meaning: {$regex: query.meaning || '', $options: 'i'}};
             if(query?.pronunciation) filter = {...filter, pronunciation: {$regex: query.pronunciation || '', $options: 'i'}};
             if(query?.notes) filter = {...filter, notes: {$regex: query.notes || '', $options: 'i'}};
+            if(query?.limit) paginate = {...paginate, limit: Number(query.limit)};
+            if(query?.skip) paginate = {...paginate, skip: Number(query.skip)};
         }
-        return await store.getWords(filter);
+        return await store.getWords(filter, paginate);
     }
 
     async getWordById(id: string) {

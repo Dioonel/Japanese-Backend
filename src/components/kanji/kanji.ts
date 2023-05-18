@@ -49,6 +49,8 @@ export const KanjiFilterJoi = joi.object({
     meaning: joi.string().min(1).max(64).optional(),
     pronunciation: joi.string().min(1).max(64).optional(),
     notes: notes.optional(),
+    limit: joi.number().integer().min(1).max(999).optional(),
+    skip: joi.number().integer().min(0).optional(),
 });
 
 
