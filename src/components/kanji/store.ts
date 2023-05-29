@@ -68,4 +68,20 @@ export class KanjiStore {
             }
         });
     }
+
+    async countKanji() {
+        return await kanjiModel.countDocuments()
+        .catch((err) => {
+            throw internal(`${err.message}`);
+        });
+    }
+
+    async getRandomKanji(quantity: number) {
+        return await kanjiModel.aggregate([
+            { $sample: { size: quantity } }
+        ])
+        .catch((err) => {
+            throw internal(`${err.message}`);
+        });
+    }
 }

@@ -69,4 +69,20 @@ export class WordStore {
         });
     }
 
+    async countWords() {
+        return await wordModel.countDocuments()
+        .catch((err) => {
+            throw internal(`${err.message}`);
+        });
+    }
+
+    async getRandomWords(quantity: number) {
+        return await wordModel.aggregate([
+            { $sample: { size: quantity } }
+        ])
+        .catch((err) => {
+            throw internal(`${err.message}`);
+        });
+    }
+
 }
