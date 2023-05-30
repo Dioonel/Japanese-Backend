@@ -36,6 +36,23 @@ export class PlayService {
         return items;
     }
 
+    async pairs(quantity: number) {
+        let kanjiCount = await kanjiStore.countKanji();
+        let wordCount = await wordStore.countWords();
+
+        if(quantity > kanjiCount + wordCount) {
+            throw internal('Not enough kanji and words to guess');
+        };
+
+        const kanji: Kanji[] = await kanjiStore.getRandomKanji(quantity / 2);
+        const words: Word[] = await wordStore.getRandomWords(quantity / 2);
+        
+        const items = this.shuffle([...kanji, ...words]);
+
+        console.log(kanji.length, words.length, items.length);
+        return items;
+    }
+
 
     randomNumber(min: number, max: number) {
         return Math.floor(Math.random() * (max - min + 1) + min);
