@@ -35,15 +35,6 @@ export const KanjiUpdateJoi = joi.object({
     notes: notes.optional(),
 });
 
-// export const IdJoi = joi.object({
-//     id: id.required(),
-// });
-
-// export const PropsJoi = joi.object({
-//     prop: joi.string().valid('meaning', 'pronunciation').required(),
-//     values: joi.array().min(1).unique().items(joi.string().min(1).max(64)).required(),
-// });
-
 export const KanjiFilterJoi = joi.object({
     kanji: kanji.optional(),
     meaning: joi.string().min(1).max(64).optional(),
