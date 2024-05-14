@@ -7,6 +7,10 @@ const statsSchema = new Schema({
         required: true,
         unique: true,
     },
+    last_checked: {
+        type: String,
+        required: true,
+    },
     overall: {
         total_correct: {
             type: Number,
@@ -14,16 +18,6 @@ const statsSchema = new Schema({
             default: 0
         },
         total_incorrect: {
-            type: Number,
-            required: true,
-            default: 0
-        },
-        current_streak: {
-            type: Number,
-            required: true,
-            default: 0
-        },
-        longest_streak: {
             type: Number,
             required: true,
             default: 0
@@ -49,6 +43,7 @@ const statsSchema = new Schema({
             date: {
                 type: String,
                 required: true,
+                unique: true,
             },
         }],
         overall: {
@@ -58,6 +53,11 @@ const statsSchema = new Schema({
                 default: 0
             },
             total_incorrect: {
+                type: Number,
+                required: true,
+                default: 0
+            },
+            total_time: {
                 type: Number,
                 required: true,
                 default: 0
@@ -84,6 +84,7 @@ const statsSchema = new Schema({
             date: {
                 type: String,
                 required: true,
+                unique: true,
             },
         }],
         overall: {
@@ -93,6 +94,11 @@ const statsSchema = new Schema({
                 default: 0
             },
             total_incorrect: {
+                type: Number,
+                required: true,
+                default: 0
+            },
+            total_time: {
                 type: Number,
                 required: true,
                 default: 0

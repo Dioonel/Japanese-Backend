@@ -13,17 +13,17 @@ let user_id = joi.string().regex(/^[0-9a-fA-F]{24}$/);
 let total_correct = joi.number().integer().min(0);
 let total_incorrect = joi.number().integer().min(0);
 let total_time = joi.number().integer().min(0);
+let type = joi.string().valid('guess', 'pairs');
 
-export const GuessPushHistoryJoi = joi.object({
+const ScoreJoi = joi.object({
     total_correct: total_correct.required(),
     total_incorrect: total_incorrect.required(),
     time: total_time.required(),
 });
 
-export const PairsPushHistoryJoi = joi.object({
-    total_correct: total_correct.required(),
-    total_incorrect: total_incorrect.required(),
-    time: total_time.required(),
+export const ScoreSubmitJoi = joi.object({
+    score: ScoreJoi.required(),
+    type: type.required(),
 });
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -41,19 +41,17 @@ export interface Stats {
 export interface OverallStats {
     total_correct: number;
     total_incorrect: number;
-    current_streak: number;
-    longest_streak: number;
     total_time: number;
 }
 
 export interface GuessStats {
     history: History[];
-    overall: OverallSimple;
+    overall: OverallWithAvg;
 }
 
 export interface PairsStats {
     history: History[];
-    overall: OverallSimple;
+    overall: OverallWithAvg;
 }
 
 interface History {
@@ -62,16 +60,12 @@ interface History {
     date: string;
 }
 
-interface OverallSimple extends Omit<OverallStats, 'current_streak' | 'longest_streak'> {
+interface OverallWithAvg extends OverallStats {
     average_time: number;
 }
 
 export interface StatsCreateDTO extends Omit<Stats, '_id'> {}
 
-export interface GuessPushHistoryDTO extends Omit<History, 'date'> {
-    time: number;
-}
-
-export interface PairsPushHistoryDTO extends Omit<History, 'date'> {
+export interface GenericPushHistoryDTO extends Omit<History, 'date'> {
     time: number;
 }

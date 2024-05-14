@@ -4,9 +4,12 @@ import { KanjiStore } from './../kanji/store.js';
 import { Kanji } from './../kanji/kanji.js';
 import { WordStore } from './../words/store.js';
 import { Word } from './../words/word.js';
+import { StatsService } from './../stats/service.js';
+import { GenericPushHistoryDTO } from './../stats/stats.js';
 
 const kanjiStore = KanjiStore.getInstance();
 const wordStore = WordStore.getInstance();
+const statsService = StatsService.getInstance();
 
 export class PlayService {
     private static _instance: PlayService;
@@ -32,7 +35,6 @@ export class PlayService {
         
         const items = this.shuffle([...kanji, ...words]);
 
-        console.log(kanji.length, words.length, items.length);
         return items;
     }
 
@@ -49,7 +51,6 @@ export class PlayService {
         
         const items = this.shuffle([...kanji, ...words]);
 
-        console.log(kanji.length, words.length, items.length);
         return items;
     }
 
@@ -71,5 +72,10 @@ export class PlayService {
         }
     
         return array;
+    }
+
+    async submitScore(userId: string, score: GenericPushHistoryDTO, type: 'guess' | 'pairs') {
+        // Should user userId when user system is implemented
+        return await statsService.pushGenericHistory(score, type);
     }
 }

@@ -1,6 +1,7 @@
 import { notFound } from '@hapi/boom';
+import { formatISO } from 'date-fns';
 import { StatsStore } from './store.js';
-import { GuessPushHistoryDTO, PairsPushHistoryDTO, StatsCreateDTO } from './stats.js';
+import { GenericPushHistoryDTO, StatsCreateDTO } from './stats.js';
 
 const store = StatsStore.getInstance();
 
@@ -15,11 +16,19 @@ export class StatsService {
     }
 
     async getStats() {
+        // Refactor when user system is implemented
         const stats = await store.getStats();
-        if (!stats) {
-            throw notFound('Stats not found');
-        }
         return stats;
+    }
+
+    async pushGenericHistory(genericHistory: GenericPushHistoryDTO, type: 'guess' | 'pairs') {
+        const match = {
+            total_correct: genericHistory.total_correct,
+            total_incorrect: genericHistory.total_incorrect,
+            date: formatISO(new Date(), { representation: 'date' })
+        }
+
+        return await store.updateHistory(match, genericHistory.time, type);
     }
 
     // Re-utilize when user system is implemented
@@ -29,8 +38,6 @@ export class StatsService {
     //         overall: {
     //             total_correct: 0,
     //             total_incorrect: 0,
-    //             current_streak: 0,
-    //             longest_streak: 0,
     //             total_time: 0,
     //         },
     //         guess: {
