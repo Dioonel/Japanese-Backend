@@ -13,7 +13,6 @@ export class KanjiStore {
     }
     
     async getKanji(filter, paginate) {
-        console.log(filter);
         return await kanjiModel.find(filter)
         .limit(paginate?.limit || null)
         .skip((paginate?.limit || 1) * paginate?.skip || 0)
