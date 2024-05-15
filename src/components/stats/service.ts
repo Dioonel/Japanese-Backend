@@ -35,6 +35,7 @@ export class StatsService {
     // async initializeStats(userId) {
     //     const baseStats: StatsCreateDTO = {
     //         user_id: userId,
+    //         last_checked: '2024-01-01',
     //         overall: {
     //             total_correct: 0,
     //             total_incorrect: 0,
