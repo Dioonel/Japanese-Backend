@@ -32,7 +32,7 @@ Personal project to save my Japanese vocabulary and exercise with minigames.
 > **JWT required in headers.**
 - /push/:id (**PATCH**)
 > **Depracated.**
-> Pushes a new pronunciation or meaning to an existant kanji via id.
+> Pushes a new pronunciation or meaning to an existent kanji via id.
 > **JWT required in headers.**
 - /pull/:id (**PATCH**)
 > **Depracated.**
@@ -59,7 +59,7 @@ Personal project to save my Japanese vocabulary and exercise with minigames.
 > **JWT required in headers.**
 - /push/:id (**PATCH**)
 > **Depracated.**
-> Pushes a new pronunciation or meaning to an existant word via id.
+> Pushes a new pronunciation or meaning to an existent word via id.
 > **JWT required in headers.**
 - /pull/:id (**PATCH**)
 > **Depracated.**
@@ -74,3 +74,12 @@ Personal project to save my Japanese vocabulary and exercise with minigames.
 - /pairs (**POST**)
 > Returns random kanjis and words.
 > A quantity must be specified via body.
+- /submit-score (**POST**)
+> Submits a score to the database, only if logged in.
+> Data sent via body. (Schema for body at /src/components/stats/stats.ts)
+> **JWT required in headers.**
+
+## /stats
+
+- / (**GET**)
+> Returns my stats. (Will be reworked once user system is implemented)
