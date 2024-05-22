@@ -21,12 +21,26 @@ router.post('/login',
     }
 );
 
-router.post('/register',
-    joiValidator(RegisterJoi, 'body'),
+// router.post('/register',
+//     joiValidator(RegisterJoi, 'body'),
+//     async (req, res, next) => {
+//         try{
+//             const user = await service.register(req.body);
+//             res.json(user);
+//         } catch (err) {
+//             next(err);
+//         }
+//     }
+// );
+
+router.get('/check',
+    passport.authenticate('jwt', { session: false }),
     async (req, res, next) => {
         try{
-            const user = await service.register(req.body);
-            res.json(user);
+            res.json({
+                authorize: true,
+                user: req.user
+            });
         } catch (err) {
             next(err);
         }
